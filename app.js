@@ -13,6 +13,7 @@ const state = {
 let progressTimer = null;
 let progressValue = 0;
 let isValidationRunning = false;
+let validationAbortController = null;
 let greetingTimer = null;
 const dataSourcePanelState = {
     transactionsCollapsed: true,
@@ -346,6 +347,8 @@ function startProgress() {
     setLoadingState(true);
     setProgress(4);
     updateValidationStageStatus();
+    const cancelBtn = byId("cancel-validation-btn");
+    if (cancelBtn) cancelBtn.hidden = false;
 
     progressTimer = setInterval(() => {
         if (progressValue >= 99) {
@@ -367,6 +370,8 @@ function completeProgress() {
     clearInterval(progressTimer);
     setProgress(100);
     setLoadingState(false);
+    const cancelBtn = byId("cancel-validation-btn");
+    if (cancelBtn) cancelBtn.hidden = true;
 }
 
 function resetProgress() {
@@ -374,6 +379,8 @@ function resetProgress() {
     setProgress(0);
     setLoadingState(false);
     setProgressShellVisible(false);
+    const cancelBtn = byId("cancel-validation-btn");
+    if (cancelBtn) cancelBtn.hidden = true;
 }
 
 function renderTable(elementId, rows) {
@@ -1857,6 +1864,7 @@ async function runValidation() {
     }
 
     isValidationRunning = true;
+    validationAbortController = new AbortController();
     setStatus("Validating...");
     byId("summary-text").textContent = hasUploads
         ? "Validation in progress. Parsing files and matching records..."
@@ -1867,6 +1875,7 @@ async function runValidation() {
         const response = await arveeFetch("/api/validate", {
             method: "POST",
             body: formData,
+            signal: validationAbortController.signal,
         });
 
         const payload = await response.json();
@@ -1898,12 +1907,26 @@ async function runValidation() {
 
         completeProgress();
         isValidationRunning = false;
+        validationAbortController = null;
         setStatus("Validation Complete");
     } catch (err) {
         isValidationRunning = false;
+        validationAbortController = null;
         resetProgress();
-        setStatus("Error");
-        showError(err.message);
+        if (err.name === "AbortError") {
+            setStatus("Cancelled");
+            byId("summary-text").textContent = "Validation cancelled.";
+        } else {
+            setStatus("Error");
+            showError(err.message);
+        }
+    }
+}
+
+function cancelValidation() {
+    if (validationAbortController) {
+        validationAbortController.abort();
+        validationAbortController = null;
     }
 }
 
@@ -2194,6 +2217,7 @@ byId("new-session-btn").addEventListener("click", createSession);
 byId("load-session-btn").addEventListener("click", loadSessionInputs);
 byId("save-session-btn").addEventListener("click", saveSession);
 byId("validate-btn").addEventListener("click", runValidation);
+byId("cancel-validation-btn")?.addEventListener("click", cancelValidation);
 byId("clear-btn").addEventListener("click", clearAll);
 byId("download-btn").addEventListener("click", downloadValidatedPdf);
 byId("accept-recommendations-btn").addEventListener("click", acceptSelectedRecommendations);
