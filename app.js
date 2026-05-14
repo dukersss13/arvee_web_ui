@@ -35,9 +35,22 @@ function randomBufferingPhrase() {
 const byId = (id) => document.getElementById(id);
 
 const DEFAULT_API_BASE_URL = "https://arvee-backend-5hqe7uiuka-uc.a.run.app";
-const API_BASE_URL = String(
+let API_BASE_URL = String(
     globalThis.ARVEE_API_BASE_URL || localStorage.getItem("arveeApiBaseUrl") || DEFAULT_API_BASE_URL,
 ).replace(/\/$/, "");
+
+function setApiBaseUrl(nextValue) {
+    const normalized = String(nextValue || "").trim().replace(/\/$/, "");
+    if (!normalized) {
+        return;
+    }
+    API_BASE_URL = normalized;
+    localStorage.setItem("arveeApiBaseUrl", normalized);
+    const input = byId("api-base-url");
+    if (input) {
+        input.value = normalized;
+    }
+}
 
 function resolveApiUrl(input) {
     if (typeof input !== "string") {
@@ -61,6 +74,84 @@ function authHeaders() {
         headers["X-User-Id"] = userEmail;
     }
     return headers;
+}
+
+function currentUserEmail() {
+    return localStorage.getItem("arveeUserEmail") || "";
+}
+
+function setAuthStatus(message, { error = false } = {}) {
+    const node = byId("auth-status");
+    if (!node) {
+        return;
+    }
+    node.textContent = message;
+    node.classList.toggle("error", error);
+}
+
+function refreshAuthUi() {
+    const email = currentUserEmail();
+    if (email) {
+        setAuthStatus(`Authenticated as ${email}`);
+    } else {
+        setAuthStatus("Not authenticated.");
+    }
+}
+
+async function authRequest(path, body) {
+    const response = await arveeFetch(path, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+    });
+
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        throw new Error(payload.error || "Authentication request failed.");
+    }
+    return payload;
+}
+
+async function loginUser() {
+    const email = byId("auth-email")?.value.trim().toLowerCase();
+    const password = byId("auth-password")?.value || "";
+    if (!email || !password) {
+        setAuthStatus("Email and password are required.", { error: true });
+        return;
+    }
+
+    const payload = await authRequest("/api/auth/login", { email, password });
+    localStorage.setItem("arveeAuthToken", payload.token || "");
+    localStorage.setItem("arveeUserEmail", payload.user?.email || email);
+    refreshAuthUi();
+}
+
+async function signupUser() {
+    const email = byId("auth-email")?.value.trim().toLowerCase();
+    const password = byId("auth-password")?.value || "";
+    const confirm = byId("auth-confirm")?.value || "";
+    if (!email || !password) {
+        setAuthStatus("Email and password are required.", { error: true });
+        return;
+    }
+    if (password !== confirm) {
+        setAuthStatus("Password and confirmation must match.", { error: true });
+        return;
+    }
+
+    const payload = await authRequest("/api/auth/signup", { email, password });
+    localStorage.setItem("arveeAuthToken", payload.token || "");
+    localStorage.setItem("arveeUserEmail", payload.user?.email || email);
+    refreshAuthUi();
+}
+
+function logoutUser() {
+    localStorage.removeItem("arveeAuthToken");
+    localStorage.removeItem("arveeUserEmail");
+    refreshAuthUi();
+    setStatus("Idle");
 }
 
 async function arveeFetch(input, init = {}) {
@@ -1558,12 +1649,9 @@ async function createSession({ clearUi = true } = {}) {
         setStatus("Session ready");
         return payload.sessionId;
     } catch (err) {
-        const fallbackSessionId = buildLocalSessionId();
-        byId("session-id").value = fallbackSessionId;
-        byId("load-session-id").value = fallbackSessionId;
-        setStatus("Session ready");
-        showError(`Session service unavailable. Using local session: ${fallbackSessionId}`);
-        return fallbackSessionId;
+        setStatus("Error");
+        showError(err.message || "Could not create session.");
+        return "";
     }
 }
 
@@ -1960,6 +2048,28 @@ async function downloadValidatedPdf() {
 
 // Signal that main app handlers are active so the inline fallback click logic stays disabled.
 window.__arveeAppReady = true;
+
+setApiBaseUrl(API_BASE_URL);
+refreshAuthUi();
+
+byId("api-base-url")?.addEventListener("change", (event) => {
+    setApiBaseUrl(event.target.value);
+});
+byId("auth-login-btn")?.addEventListener("click", async () => {
+    try {
+        await loginUser();
+    } catch (err) {
+        setAuthStatus(err.message || "Login failed.", { error: true });
+    }
+});
+byId("auth-signup-btn")?.addEventListener("click", async () => {
+    try {
+        await signupUser();
+    } catch (err) {
+        setAuthStatus(err.message || "Signup failed.", { error: true });
+    }
+});
+byId("auth-logout-btn")?.addEventListener("click", logoutUser);
 
 byId("new-session-btn").addEventListener("click", createSession);
 byId("load-session-btn").addEventListener("click", loadSessionInputs);

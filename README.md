@@ -2,6 +2,10 @@
 
 Standalone web frontend for ArVee, separated from the backend repository.
 
+## Repository
+
+- GitHub: https://github.com/dukersss13/arvee_web_ui
+
 ## Backend Connection
 
 This frontend connects to the deployed backend API at:
@@ -21,6 +25,12 @@ location.reload()
 
 The backend currently expects authenticated requests.
 
+This UI includes built-in login/signup controls (email + password) at the top
+of the Session & Inputs panel, calling:
+
+- `POST /api/auth/login`
+- `POST /api/auth/signup`
+
 This UI sends:
 
 - `Authorization: Bearer <token>` when `localStorage.arveeAuthToken` exists
@@ -33,6 +43,11 @@ localStorage.setItem("arveeAuthToken", "<token-from-/api/auth/login>")
 localStorage.setItem("arveeUserEmail", "you@example.com")
 location.reload()
 ```
+
+## Documentation moved from backend repo
+
+- [docs/application.md](docs/application.md)
+- [docs/system_architecture.svg](docs/system_architecture.svg)
 
 ## Run Locally
 
@@ -60,3 +75,9 @@ Example:
 ```bash
 ARVEE_CORS_ORIGINS=http://localhost:8080,https://your-frontend-domain
 ```
+
+## CI/CD
+
+GitHub Actions workflow is included to deploy this static site to GitHub Pages:
+
+- `.github/workflows/pages.yml`
