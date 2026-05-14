@@ -35,6 +35,77 @@ function randomBufferingPhrase() {
 }
 
 const byId = (id) => document.getElementById(id);
+const THEME_STORAGE_KEY = "arveeTheme";
+
+function getStoredTheme() {
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    return stored === "light" || stored === "dark" ? stored : "";
+}
+
+function getResolvedTheme() {
+    const attrTheme = document.documentElement.getAttribute("data-theme");
+    if (attrTheme === "light" || attrTheme === "dark") {
+        return attrTheme;
+    }
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+function updateThemeToggleLabel() {
+    const button = byId("theme-toggle-btn");
+    if (!button) {
+        return;
+    }
+    const activeTheme = getResolvedTheme();
+    const nextTheme = activeTheme === "dark" ? "Light" : "Dark";
+    button.textContent = `Switch to ${nextTheme}`;
+    button.setAttribute("aria-pressed", String(activeTheme === "dark"));
+}
+
+function applyTheme(theme) {
+    if (theme === "dark" || theme === "light") {
+        document.documentElement.setAttribute("data-theme", theme);
+    } else {
+        document.documentElement.removeAttribute("data-theme");
+    }
+    updateThemeToggleLabel();
+}
+
+function initializeTheme() {
+    const storedTheme = getStoredTheme();
+    applyTheme(storedTheme || "");
+
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    media.addEventListener("change", () => {
+        if (!getStoredTheme()) {
+            updateThemeToggleLabel();
+        }
+    });
+}
+
+function toggleTheme() {
+    const nextTheme = getResolvedTheme() === "dark" ? "light" : "dark";
+    localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+    applyTheme(nextTheme);
+}
+
+function readCssVar(name, fallback = "") {
+    const value = getComputedStyle(document.documentElement)
+        .getPropertyValue(name)
+        .trim();
+    return value || fallback;
+}
+
+function getChartPalette() {
+    return [
+        readCssVar("--chart-color-0", "#4ea8de"),
+        readCssVar("--chart-color-1", "#e59f3a"),
+        readCssVar("--chart-color-2", "#6f8a3b"),
+        readCssVar("--chart-color-3", "#cf6b4d"),
+        readCssVar("--chart-color-4", "#4a7895"),
+        readCssVar("--chart-color-5", "#b7779f"),
+        readCssVar("--chart-color-6", "#8f6b4f"),
+    ];
+}
 
 const DEFAULT_API_BASE_URL = "https://arvee-backend-5hqe7uiuka-uc.a.run.app";
 let API_BASE_URL = String(
@@ -750,13 +821,17 @@ function buildGroupedBarChartNode(chart) {
 
     const legend = document.createElement("div");
     legend.className = "chat-chart-legend";
+    const palette = getChartPalette();
+    const chartAxisStroke = readCssVar("--chart-axis-stroke", "#b8ad99");
+    const chartGridStrong = readCssVar("--chart-grid-strong", "#c8beac");
+    const chartGridSoft = readCssVar("--chart-grid-soft", "#ece4d6");
     series.forEach((s, idx) => {
         const legendItem = document.createElement("span");
         legendItem.className = "chat-chart-legend-item";
 
         const swatch = document.createElement("span");
         swatch.className = "chat-chart-swatch";
-        swatch.style.backgroundColor = idx === 0 ? "#0f7b6c" : "#e59f3a";
+        swatch.style.backgroundColor = palette[idx % palette.length];
 
         const label = document.createElement("span");
         label.textContent = String(s.name || `Series ${idx + 1}`);
@@ -789,7 +864,7 @@ function buildGroupedBarChartNode(chart) {
         "d",
         `M ${margin.left} ${margin.top} V ${margin.top + plotHeight} H ${margin.left + plotWidth}`,
     );
-    axis.setAttribute("stroke", "#b8ad99");
+    axis.setAttribute("stroke", chartAxisStroke);
     axis.setAttribute("stroke-width", "1");
     axis.setAttribute("fill", "none");
     svg.appendChild(axis);
@@ -804,7 +879,7 @@ function buildGroupedBarChartNode(chart) {
         grid.setAttribute("x2", String(margin.left + plotWidth));
         grid.setAttribute("y1", String(y));
         grid.setAttribute("y2", String(y));
-        grid.setAttribute("stroke", i === 0 ? "#c8beac" : "#ece4d6");
+        grid.setAttribute("stroke", i === 0 ? chartGridStrong : chartGridSoft);
         grid.setAttribute("stroke-width", "1");
         svg.appendChild(grid);
 
@@ -841,7 +916,7 @@ function buildGroupedBarChartNode(chart) {
             bar.setAttribute("width", String(barWidth));
             bar.setAttribute("height", String(Math.max(0, barHeight)));
             bar.setAttribute("rx", "2");
-            bar.setAttribute("fill", seriesIndex === 0 ? "#0f7b6c" : "#e59f3a");
+            bar.setAttribute("fill", palette[seriesIndex % palette.length]);
             bar.classList.add("chat-chart-bar");
 
             const label = String(entry?.name || `Series ${seriesIndex + 1}`);
@@ -917,13 +992,17 @@ function buildSingleBarChartNode(chart) {
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
     const maxValue = Math.max(1, ...values);
+    const palette = getChartPalette();
+    const chartAxisStroke = readCssVar("--chart-axis-stroke", "#b8ad99");
+    const chartGridStrong = readCssVar("--chart-grid-strong", "#c8beac");
+    const chartGridSoft = readCssVar("--chart-grid-soft", "#ece4d6");
 
     const axis = document.createElementNS("http://www.w3.org/2000/svg", "path");
     axis.setAttribute(
         "d",
         `M ${margin.left} ${margin.top} V ${margin.top + plotHeight} H ${margin.left + plotWidth}`,
     );
-    axis.setAttribute("stroke", "#b8ad99");
+    axis.setAttribute("stroke", chartAxisStroke);
     axis.setAttribute("stroke-width", "1");
     axis.setAttribute("fill", "none");
     svg.appendChild(axis);
@@ -938,7 +1017,7 @@ function buildSingleBarChartNode(chart) {
         grid.setAttribute("x2", String(margin.left + plotWidth));
         grid.setAttribute("y1", String(y));
         grid.setAttribute("y2", String(y));
-        grid.setAttribute("stroke", i === 0 ? "#c8beac" : "#ece4d6");
+        grid.setAttribute("stroke", i === 0 ? chartGridStrong : chartGridSoft);
         grid.setAttribute("stroke-width", "1");
         svg.appendChild(grid);
 
@@ -965,7 +1044,7 @@ function buildSingleBarChartNode(chart) {
         bar.setAttribute("width", String(barWidth));
         bar.setAttribute("height", String(Math.max(0, barHeight)));
         bar.setAttribute("rx", "2");
-        bar.setAttribute("fill", "#0f7b6c");
+        bar.setAttribute("fill", palette[idx % palette.length]);
         bar.classList.add("chat-chart-bar");
 
         const tooltipText = `${label}: ${formatUsd(value)}`;
@@ -1044,7 +1123,7 @@ function buildPieChartNode(chart) {
     const cx = 130;
     const cy = 130;
     const radius = 82;
-    const colors = ["#0f7b6c", "#e59f3a", "#6f8a3b", "#cf6b4d", "#4a7895", "#b7779f", "#8f6b4f"];
+    const colors = getChartPalette();
 
     let startAngle = -Math.PI / 2;
     labels.forEach((label, idx) => {
@@ -1103,7 +1182,7 @@ function buildPieChartNode(chart) {
     hole.setAttribute("cx", String(cx));
     hole.setAttribute("cy", String(cy));
     hole.setAttribute("r", "34");
-    hole.setAttribute("fill", "#f8f4ec");
+    hole.setAttribute("fill", readCssVar("--chart-center-hole", "#f8f4ec"));
     svg.appendChild(hole);
 
     const centerText = document.createElementNS("http://www.w3.org/2000/svg", "text");
@@ -2087,6 +2166,7 @@ async function downloadValidatedPdf() {
 // Signal that main app handlers are active so the inline fallback click logic stays disabled.
 window.__arveeAppReady = true;
 
+initializeTheme();
 setApiBaseUrl(API_BASE_URL);
 refreshAuthUi();
 checkBackendConnectivity();
@@ -2140,6 +2220,7 @@ byId("chat-input").addEventListener("keydown", (event) => {
     event.preventDefault();
     sendChatMessage();
 });
+byId("theme-toggle-btn")?.addEventListener("click", toggleTheme);
 
 byId("loaded-transactions-toggle")?.addEventListener("click", () => {
     setDataSourceCollapsed("transactions", !dataSourcePanelState.transactionsCollapsed);

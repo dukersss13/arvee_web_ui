@@ -1,16 +1,176 @@
 :root {
     --paper: #f4efe4;
     --sand: #e9dbc1;
-    --mint: #d2ece5;
+    --mint: #e3f2fd;
     --ink: #1f1d1a;
     --ink-muted: #5a554d;
     --line: rgba(34, 30, 26, 0.15);
     --card: rgba(255, 255, 255, 0.86);
-    --teal: #0f7b6c;
-    --teal-dark: #0a5f53;
+    --card-elevated: rgba(255, 255, 255, 0.94);
+    --teal: #449dd4;
+    --teal-dark: #1f78b4;
+    --teal-soft: rgba(68, 157, 212, 0.08);
     --coral: #ea8f58;
     --danger: #b23a2c;
+    --success: #64b5f6;
+    --table-head: #f4ebda;
+    --surface-solid: #ffffff;
+    --surface-strong: rgba(255, 255, 255, 0.78);
+    --surface-subtle: rgba(255, 255, 255, 0.62);
+    --text-on-accent: #ffffff;
     --shadow-soft: 0 16px 34px rgba(38, 31, 23, 0.13);
+    --shadow-popup: 0 12px 40px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-button-hover: 0 8px 14px rgba(31, 120, 180, 0.2);
+    --shadow-receipt: 0 2px 5px rgba(34, 30, 26, 0.13);
+    --shadow-tooltip: 0 6px 16px rgba(0, 0, 0, 0.18);
+    --shadow-modal: 0 12px 48px rgba(0, 0, 0, 0.28);
+    --shadow-teal: 0 6px 20px rgba(68, 157, 212, 0.4);
+    --shadow-teal-strong: 0 8px 28px rgba(68, 157, 212, 0.5);
+    --bg-radial-warm: #fff2be;
+    --bg-radial-cool: #cfe7f8;
+    --grid-line: rgba(31, 29, 26, 0.03);
+    --progress-track: rgba(68, 157, 212, 0.1);
+    --progress-track-glow: rgba(68, 157, 212, 0.24);
+    --progress-label: #1f78b4;
+    --table-border: #ece7dd;
+    --field-border: #d3c4ab;
+    --field-bg: rgba(255, 255, 255, 0.86);
+    --chat-header-bg: rgba(244, 239, 228, 0.5);
+    --chat-compose-bg: rgba(244, 239, 228, 0.3);
+    --chat-assistant-bg: rgba(244, 239, 228, 0.65);
+    --chat-chart-bg: rgba(255, 255, 255, 0.8);
+    --chat-chart-border: #d9cdb8;
+    --chat-chart-title: #5f5544;
+    --chat-chart-axis: #7a6f5d;
+    --chart-axis-stroke: #b8ad99;
+    --chart-grid-strong: #c8beac;
+    --chart-grid-soft: #ece4d6;
+    --chart-center-hole: #f8f4ec;
+    --tooltip-bg: rgba(33, 29, 24, 0.92);
+    --overlay-bg: rgba(33, 29, 24, 0.55);
+    --modal-bg: #faf6ee;
+    --modal-close-bg: rgba(0, 0, 0, 0.06);
+    --modal-close-bg-hover: rgba(0, 0, 0, 0.12);
+    --modal-close-danger: #c24b38;
+    --chart-color-0: #4ea8de;
+    --chart-color-1: #e59f3a;
+    --chart-color-2: #6f8a3b;
+    --chart-color-3: #cf6b4d;
+    --chart-color-4: #4a7895;
+    --chart-color-5: #b7779f;
+    --chart-color-6: #8f6b4f;
+}
+
+html[data-theme="dark"] {
+    color-scheme: dark;
+    --paper: #1a1816;
+    --sand: #2a2520;
+    --mint: #1b2e42;
+    --ink: #f0ebe2;
+    --ink-muted: #a39b8e;
+    --line: rgba(240, 235, 226, 0.12);
+    --card: rgba(36, 33, 32, 0.9);
+    --card-elevated: rgba(42, 39, 36, 0.95);
+    --teal: #68b1ee;
+    --teal-dark: #4299e1;
+    --teal-soft: rgba(104, 177, 238, 0.11);
+    --danger: #e05545;
+    --success: #5aa8e8;
+    --table-head: #2e2924;
+    --surface-solid: #242120;
+    --surface-strong: rgba(36, 33, 32, 0.85);
+    --surface-subtle: rgba(34, 31, 29, 0.82);
+    --shadow-soft: 0 16px 34px rgba(0, 0, 0, 0.34);
+    --shadow-popup: 0 12px 40px rgba(0, 0, 0, 0.36), 0 2px 8px rgba(0, 0, 0, 0.18);
+    --shadow-button-hover: 0 8px 14px rgba(104, 177, 238, 0.22);
+    --shadow-receipt: 0 2px 5px rgba(0, 0, 0, 0.35);
+    --shadow-tooltip: 0 6px 16px rgba(0, 0, 0, 0.3);
+    --shadow-modal: 0 12px 48px rgba(0, 0, 0, 0.42);
+    --shadow-teal: 0 6px 20px rgba(104, 177, 238, 0.28);
+    --shadow-teal-strong: 0 8px 28px rgba(104, 177, 238, 0.35);
+    --bg-radial-warm: #5b3a2b;
+    --bg-radial-cool: #27425f;
+    --grid-line: rgba(240, 235, 226, 0.03);
+    --progress-track: rgba(104, 177, 238, 0.14);
+    --progress-track-glow: rgba(104, 177, 238, 0.28);
+    --progress-label: #68b1ee;
+    --table-border: rgba(240, 235, 226, 0.1);
+    --field-border: rgba(240, 235, 226, 0.2);
+    --field-bg: rgba(42, 39, 36, 0.9);
+    --chat-header-bg: rgba(42, 37, 32, 0.75);
+    --chat-compose-bg: rgba(42, 37, 32, 0.55);
+    --chat-assistant-bg: rgba(42, 37, 32, 0.8);
+    --chat-chart-bg: rgba(42, 39, 36, 0.9);
+    --chat-chart-border: rgba(240, 235, 226, 0.16);
+    --chat-chart-title: #c3b8a8;
+    --chat-chart-axis: #aca292;
+    --chart-axis-stroke: rgba(240, 235, 226, 0.35);
+    --chart-grid-strong: rgba(240, 235, 226, 0.25);
+    --chart-grid-soft: rgba(240, 235, 226, 0.12);
+    --chart-center-hole: #2a2724;
+    --tooltip-bg: rgba(20, 18, 16, 0.95);
+    --overlay-bg: rgba(0, 0, 0, 0.6);
+    --modal-bg: #211d19;
+    --modal-close-bg: rgba(240, 235, 226, 0.1);
+    --modal-close-bg-hover: rgba(240, 235, 226, 0.16);
+    --modal-close-danger: #e05545;
+}
+
+@media (prefers-color-scheme: dark) {
+    html:not([data-theme="light"]) {
+        color-scheme: dark;
+        --paper: #1a1816;
+        --sand: #2a2520;
+        --mint: #1b2e42;
+        --ink: #f0ebe2;
+        --ink-muted: #a39b8e;
+        --line: rgba(240, 235, 226, 0.12);
+        --card: rgba(36, 33, 32, 0.9);
+        --card-elevated: rgba(42, 39, 36, 0.95);
+        --teal: #68b1ee;
+        --teal-dark: #4299e1;
+        --teal-soft: rgba(104, 177, 238, 0.11);
+        --danger: #e05545;
+        --success: #5aa8e8;
+        --table-head: #2e2924;
+        --surface-solid: #242120;
+        --surface-strong: rgba(36, 33, 32, 0.85);
+        --surface-subtle: rgba(34, 31, 29, 0.82);
+        --shadow-soft: 0 16px 34px rgba(0, 0, 0, 0.34);
+        --shadow-popup: 0 12px 40px rgba(0, 0, 0, 0.36), 0 2px 8px rgba(0, 0, 0, 0.18);
+        --shadow-button-hover: 0 8px 14px rgba(104, 177, 238, 0.22);
+        --shadow-receipt: 0 2px 5px rgba(0, 0, 0, 0.35);
+        --shadow-tooltip: 0 6px 16px rgba(0, 0, 0, 0.3);
+        --shadow-modal: 0 12px 48px rgba(0, 0, 0, 0.42);
+        --shadow-teal: 0 6px 20px rgba(104, 177, 238, 0.28);
+        --shadow-teal-strong: 0 8px 28px rgba(104, 177, 238, 0.35);
+        --bg-radial-warm: #5b3a2b;
+        --bg-radial-cool: #27425f;
+        --grid-line: rgba(240, 235, 226, 0.03);
+        --progress-track: rgba(104, 177, 238, 0.14);
+        --progress-track-glow: rgba(104, 177, 238, 0.28);
+        --progress-label: #68b1ee;
+        --table-border: rgba(240, 235, 226, 0.1);
+        --field-border: rgba(240, 235, 226, 0.2);
+        --field-bg: rgba(42, 39, 36, 0.9);
+        --chat-header-bg: rgba(42, 37, 32, 0.75);
+        --chat-compose-bg: rgba(42, 37, 32, 0.55);
+        --chat-assistant-bg: rgba(42, 37, 32, 0.8);
+        --chat-chart-bg: rgba(42, 39, 36, 0.9);
+        --chat-chart-border: rgba(240, 235, 226, 0.16);
+        --chat-chart-title: #c3b8a8;
+        --chat-chart-axis: #aca292;
+        --chart-axis-stroke: rgba(240, 235, 226, 0.35);
+        --chart-grid-strong: rgba(240, 235, 226, 0.25);
+        --chart-grid-soft: rgba(240, 235, 226, 0.12);
+        --chart-center-hole: #2a2724;
+        --tooltip-bg: rgba(20, 18, 16, 0.95);
+        --overlay-bg: rgba(0, 0, 0, 0.6);
+        --modal-bg: #211d19;
+        --modal-close-bg: rgba(240, 235, 226, 0.1);
+        --modal-close-bg-hover: rgba(240, 235, 226, 0.16);
+        --modal-close-danger: #e05545;
+    }
 }
 
 * {
@@ -23,8 +183,8 @@ body {
     color: var(--ink);
     font-family: "Space Grotesk", sans-serif;
     background:
-        radial-gradient(circle at 3% 4%, #fff2be 0%, transparent 36%),
-        radial-gradient(circle at 100% 0%, #c6e7e0 0%, transparent 42%),
+        radial-gradient(circle at 3% 4%, var(--bg-radial-warm) 0%, transparent 36%),
+        radial-gradient(circle at 100% 0%, var(--bg-radial-cool) 0%, transparent 42%),
         linear-gradient(132deg, var(--paper), var(--sand));
 }
 
@@ -33,8 +193,8 @@ body {
     inset: 0;
     pointer-events: none;
     background-image:
-        linear-gradient(rgba(31, 29, 26, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(31, 29, 26, 0.03) 1px, transparent 1px);
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size: 30px 30px;
 }
 
@@ -58,7 +218,7 @@ body {
     padding: 1.2rem 1.25rem;
     border-radius: 18px;
     border: 1px solid var(--line);
-    background: linear-gradient(140deg, rgba(255, 255, 255, 0.78), rgba(255, 255, 255, 0.45));
+    background: linear-gradient(140deg, var(--surface-strong), color-mix(in srgb, var(--surface-strong), transparent 40%));
     box-shadow: var(--shadow-soft);
 }
 
@@ -101,6 +261,24 @@ body {
     color: var(--ink-muted);
 }
 
+.hero-actions {
+    margin-top: 0.75rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.theme-toggle {
+    border: 1px solid var(--line);
+    background: color-mix(in srgb, var(--card), var(--surface-solid) 28%);
+    color: var(--ink);
+    min-width: 132px;
+    text-align: center;
+}
+
+.theme-toggle:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--teal-soft), var(--surface-solid) 74%);
+}
+
 .panel {
     background: var(--card);
     border: 1px solid var(--line);
@@ -115,7 +293,7 @@ body {
     padding: 0.75rem;
     border: 1px solid var(--line);
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0.62);
+    background: var(--surface-subtle);
 }
 
 .auth-grid {
@@ -188,7 +366,7 @@ body {
     align-items: center;
     border: 1px solid var(--line);
     border-radius: 999px;
-    background: rgba(15, 123, 108, 0.08);
+    background: var(--teal-soft);
     color: var(--teal-dark);
     font-weight: 700;
     font-size: 0.78rem;
@@ -279,16 +457,16 @@ body {
     border-radius: 50%;
     display: grid;
     place-items: center;
-    color: #fff;
-    background: linear-gradient(135deg, var(--teal), #0a5f53);
-    box-shadow: 0 6px 20px rgba(15, 123, 108, 0.4);
+    color: var(--text-on-accent);
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+    box-shadow: var(--shadow-teal);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .chat-fab:hover {
     transform: scale(1.08);
-    box-shadow: 0 8px 28px rgba(15, 123, 108, 0.5);
+    box-shadow: var(--shadow-teal-strong);
 }
 
 .chat-fab:active {
@@ -301,7 +479,7 @@ body {
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 16px;
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--shadow-popup);
     display: grid;
     grid-template-rows: auto 1fr auto;
     overflow: hidden;
@@ -318,7 +496,7 @@ body {
     gap: 0.5rem;
     padding: 0.75rem 0.85rem;
     border-bottom: 1px solid var(--line);
-    background: rgba(244, 239, 228, 0.5);
+    background: var(--chat-header-bg);
 }
 
 .chat-popup-header h3 {
@@ -334,7 +512,7 @@ body {
     width: 28px;
     height: 28px;
     border-radius: 50%;
-    background: rgba(31, 29, 26, 0.08);
+    background: color-mix(in srgb, var(--ink), transparent 92%);
     color: var(--ink);
     font-size: 1.15rem;
     line-height: 1;
@@ -347,15 +525,15 @@ body {
 
 .chat-back-btn:hover,
 .chat-close-btn:hover {
-    background: rgba(31, 29, 26, 0.15);
+    background: color-mix(in srgb, var(--ink), transparent 85%);
 }
 
 .chat-greeting {
     max-width: 260px;
     padding: 0.48rem 0.68rem;
     border-radius: 10px;
-    border: 1px solid rgba(15, 123, 108, 0.22);
-    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid color-mix(in srgb, var(--teal), transparent 78%);
+    background: var(--card-elevated);
     color: var(--teal-dark);
     font-weight: 600;
     font-size: 0.82rem;
@@ -408,17 +586,17 @@ input[type="text"] {
     width: 100%;
     border-radius: 10px;
     border: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.86);
+    background: var(--field-bg);
     padding: 0.66rem 0.72rem;
     color: var(--ink);
     font-family: "IBM Plex Mono", monospace;
 }
 
 .dropzone {
-    border: 1px dashed rgba(15, 123, 108, 0.5);
+    border: 1px dashed color-mix(in srgb, var(--teal), transparent 50%);
     border-radius: 12px;
     padding: 0.8rem;
-    background: rgba(255, 255, 255, 0.72);
+    background: color-mix(in srgb, var(--surface-solid), transparent 28%);
 }
 
 .dropzone span {
@@ -449,7 +627,7 @@ input[type="file"] {
 
 .btn:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 8px 14px rgba(16, 64, 58, 0.16);
+    box-shadow: var(--shadow-button-hover);
 }
 
 .btn:disabled {
@@ -459,27 +637,27 @@ input[type="file"] {
 
 .btn-primary {
     background: var(--teal);
-    color: #fff;
+    color: var(--text-on-accent);
 }
 
 .btn-secondary {
-    background: #24221f;
-    color: #fff;
+    background: var(--ink);
+    color: var(--text-on-accent);
 }
 
 .btn-tertiary {
-    background: #ecdfc8;
-    color: #27221d;
+    background: var(--sand);
+    color: var(--ink);
 }
 
 .btn-muted {
-    background: #d6e8e4;
-    color: #184039;
+    background: var(--teal-soft);
+    color: var(--teal-dark);
 }
 
 .btn-primary-soft {
-    background: #8ed2c7;
-    color: #0f3f38;
+    background: color-mix(in srgb, var(--teal), var(--paper) 55%);
+    color: var(--teal-dark);
     padding: 0.5rem 0.78rem;
     font-size: 0.86rem;
     border-radius: 9px;
@@ -509,14 +687,14 @@ input[type="file"] {
     height: 14px;
     border-radius: 999px;
     border: 1px solid var(--line);
-    background: rgba(15, 123, 108, 0.08);
+    background: var(--progress-track);
     overflow: hidden;
 }
 
 .progress-track.loading {
     background:
-        linear-gradient(120deg, rgba(15, 123, 108, 0.09) 0%, rgba(15, 123, 108, 0.22) 45%, rgba(15, 123, 108, 0.09) 100%),
-        rgba(15, 123, 108, 0.08);
+        linear-gradient(120deg, var(--progress-track) 0%, var(--progress-track-glow) 45%, var(--progress-track) 100%),
+        var(--progress-track);
     background-size: 220% 100%;
     animation: trackSweep 1s linear infinite;
 }
@@ -524,7 +702,7 @@ input[type="file"] {
 .progress-fill {
     width: 0%;
     height: 100%;
-    background: linear-gradient(90deg, var(--teal), #39a89a, var(--coral));
+    background: linear-gradient(90deg, var(--teal), var(--teal-dark), var(--coral));
     transition: width 170ms ease;
 }
 
@@ -536,7 +714,7 @@ input[type="file"] {
 .progress-label {
     margin-top: 0.36rem;
     font-weight: 700;
-    color: #185248;
+    color: var(--progress-label);
 }
 
 .receipt-loader {
@@ -546,8 +724,8 @@ input[type="file"] {
     gap: 0.65rem;
     padding: 0.55rem 0.62rem;
     border-radius: 11px;
-    background: rgba(210, 236, 229, 0.56);
-    border: 1px solid rgba(15, 123, 108, 0.22);
+    background: color-mix(in srgb, var(--mint), transparent 44%);
+    border: 1px solid color-mix(in srgb, var(--teal), transparent 78%);
 }
 
 .receipt-loader[hidden] {
@@ -571,8 +749,8 @@ input[type="file"] {
     width: 30px;
     height: 24px;
     border-radius: 8px;
-    border: 1px solid rgba(20, 76, 68, 0.52);
-    background: linear-gradient(165deg, #f7fcfb, #cae8e2);
+    border: 1px solid color-mix(in srgb, var(--teal-dark), transparent 48%);
+    background: linear-gradient(165deg, color-mix(in srgb, var(--surface-solid), var(--mint) 12%), color-mix(in srgb, var(--mint), transparent 12%));
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -598,7 +776,7 @@ input[type="file"] {
     width: 30px;
     height: 3px;
     border-radius: 99px;
-    background: linear-gradient(90deg, rgba(84, 214, 188, 0.05), rgba(84, 214, 188, 1), rgba(84, 214, 188, 0.05));
+    background: linear-gradient(90deg, color-mix(in srgb, var(--teal), transparent 95%), var(--teal), color-mix(in srgb, var(--teal), transparent 95%));
     animation: armSweep 0.9s linear infinite;
     animation-play-state: paused;
 }
@@ -617,9 +795,9 @@ input[type="file"] {
     width: 34px;
     height: 24px;
     border-radius: 4px;
-    background: linear-gradient(178deg, #fff, #efe6d7);
-    border: 1px solid #d7c7aa;
-    box-shadow: 0 2px 5px rgba(34, 30, 26, 0.13);
+    background: linear-gradient(178deg, var(--surface-solid), color-mix(in srgb, var(--sand), var(--surface-solid) 55%));
+    border: 1px solid color-mix(in srgb, var(--sand), var(--ink) 20%);
+    box-shadow: var(--shadow-receipt);
     animation: receiptShuffle 1.3s ease-in-out infinite;
     animation-play-state: paused;
 }
@@ -631,8 +809,8 @@ input[type="file"] {
     top: 7px;
     width: 20px;
     height: 1.5px;
-    background: #d2c5ac;
-    box-shadow: 0 4px 0 #d2c5ac, 0 8px 0 #d2c5ac;
+    background: color-mix(in srgb, var(--sand), var(--ink) 18%);
+    box-shadow: 0 4px 0 color-mix(in srgb, var(--sand), var(--ink) 18%), 0 8px 0 color-mix(in srgb, var(--sand), var(--ink) 18%);
 }
 
 .receipt-card:nth-child(1) {
@@ -663,7 +841,7 @@ input[type="file"] {
 
 .loader-copy {
     font-weight: 600;
-    color: #165047;
+    color: var(--teal-dark);
 }
 
 .loader-copy::after {
@@ -694,7 +872,7 @@ input[type="file"] {
     border-radius: 14px;
     padding: 0.84rem;
     border: 1px solid var(--line);
-    background: rgba(255, 255, 255, 0.82);
+    background: color-mix(in srgb, var(--surface-solid), transparent 18%);
 }
 
 .metric-card p {
@@ -715,7 +893,7 @@ input[type="file"] {
     overflow: auto;
     min-height: 82px;
     max-height: 390px;
-    background: #fff;
+    background: var(--surface-solid);
 }
 
 .table-wrap table {
@@ -727,7 +905,7 @@ input[type="file"] {
 .table-wrap th,
 .table-wrap td {
     padding: 0.55rem 0.64rem;
-    border-bottom: 1px solid #ece7dd;
+    border-bottom: 1px solid var(--table-border);
     text-align: left;
 }
 
@@ -735,7 +913,7 @@ input[type="file"] {
     position: sticky;
     top: 0;
     z-index: 1;
-    background: #f4ebda;
+    background: var(--table-head);
 }
 
 .table-wrap td.check-cell,
@@ -748,7 +926,7 @@ input[type="file"] {
     width: 100%;
     min-width: 120px;
     border-radius: 8px;
-    border: 1px solid #d3c4ab;
+    border: 1px solid var(--field-border);
     padding: 0.35rem 0.42rem;
     font-family: "IBM Plex Mono", monospace;
     font-size: 0.84rem;
@@ -760,7 +938,7 @@ input[type="file"] {
 }
 
 .chat-transcript {
-    background: #fff;
+    background: var(--surface-solid);
     min-height: 347px;
     max-height: 665px;
     overflow-y: auto;
@@ -776,7 +954,7 @@ input[type="file"] {
     gap: 0.5rem;
     padding: 0.65rem 0.75rem;
     border-top: 1px solid var(--line);
-    background: rgba(244, 239, 228, 0.3);
+    background: var(--chat-compose-bg);
 }
 
 .chat-compose input {
@@ -799,8 +977,8 @@ input[type="file"] {
     height: 36px;
     border: none;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--teal), #0a5f53);
-    color: #fff;
+    background: linear-gradient(135deg, var(--teal), var(--teal-dark));
+    color: var(--text-on-accent);
     display: grid;
     place-items: center;
     cursor: pointer;
@@ -832,14 +1010,14 @@ input[type="file"] {
 }
 
 .chat-msg-user {
-    background: linear-gradient(135deg, rgba(15, 123, 108, 0.14), rgba(15, 123, 108, 0.08));
-    border: 1px solid rgba(15, 123, 108, 0.2);
+    background: linear-gradient(135deg, color-mix(in srgb, var(--teal), transparent 86%), var(--teal-soft));
+    border: 1px solid color-mix(in srgb, var(--teal), transparent 80%);
     align-self: flex-end;
     border-bottom-right-radius: 4px;
 }
 
 .chat-msg-assistant {
-    background: rgba(244, 239, 228, 0.65);
+    background: var(--chat-assistant-bg);
     border: 1px solid var(--line);
     align-self: flex-start;
     border-bottom-left-radius: 4px;
@@ -847,8 +1025,8 @@ input[type="file"] {
 
 .chat-chart {
     margin-top: 0.55rem;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid #d9cdb8;
+    background: var(--chat-chart-bg);
+    border: 1px solid var(--chat-chart-border);
     border-radius: 10px;
     padding: 0.5rem 0.5rem 0.35rem;
     position: relative;
@@ -859,7 +1037,7 @@ input[type="file"] {
 .chat-chart-title {
     font-size: 0.74rem;
     font-weight: 600;
-    color: #5f5544;
+    color: var(--chat-chart-title);
     margin-bottom: 0.28rem;
 }
 
@@ -875,7 +1053,7 @@ input[type="file"] {
     align-items: center;
     gap: 0.28rem;
     font-size: 0.69rem;
-    color: #5f5544;
+    color: var(--chat-chart-title);
 }
 
 .chat-chart-swatch {
@@ -891,7 +1069,7 @@ input[type="file"] {
 }
 
 .chat-chart-axis-text {
-    fill: #7a6f5d;
+    fill: var(--chat-chart-axis);
     font-size: 8px;
     font-family: "IBM Plex Sans", sans-serif;
 }
@@ -909,13 +1087,13 @@ input[type="file"] {
     z-index: 2;
     pointer-events: none;
     transform: translate(-50%, -100%);
-    background: rgba(33, 29, 24, 0.92);
-    color: #fff;
+    background: var(--tooltip-bg);
+    color: var(--text-on-accent);
     border-radius: 6px;
     padding: 0.2rem 0.35rem;
     font-size: 0.7rem;
     white-space: nowrap;
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+    box-shadow: var(--shadow-tooltip);
 }
 
 .chat-chart-expand-btn {
@@ -926,8 +1104,8 @@ input[type="file"] {
     height: 26px;
     border: none;
     border-radius: 5px;
-    background: rgba(255, 255, 255, 0.7);
-    color: #5f5544;
+    background: color-mix(in srgb, var(--surface-solid), transparent 30%);
+    color: var(--chat-chart-title);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -943,15 +1121,15 @@ input[type="file"] {
 }
 
 .chat-chart-expand-btn:hover {
-    background: rgba(255, 255, 255, 0.95);
-    color: #0f7b6c;
+    background: color-mix(in srgb, var(--surface-solid), transparent 5%);
+    color: var(--teal);
 }
 
 .chart-modal-overlay {
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background: rgba(33, 29, 24, 0.55);
+    background: var(--overlay-bg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -960,9 +1138,9 @@ input[type="file"] {
 
 .chart-modal {
     position: relative;
-    background: #faf6ee;
+    background: var(--modal-bg);
     border-radius: 14px;
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.28);
+    box-shadow: var(--shadow-modal);
     padding: 1.2rem 1.4rem 1rem;
     width: min(92vw, 720px);
     max-height: 88vh;
@@ -977,8 +1155,8 @@ input[type="file"] {
     height: 30px;
     border: none;
     border-radius: 50%;
-    background: rgba(0, 0, 0, 0.06);
-    color: #5f5544;
+    background: var(--modal-close-bg);
+    color: var(--chat-chart-title);
     font-size: 1.3rem;
     line-height: 1;
     cursor: pointer;
@@ -991,8 +1169,8 @@ input[type="file"] {
 }
 
 .chart-modal-close-btn:hover {
-    background: rgba(0, 0, 0, 0.12);
-    color: #c24b38;
+    background: var(--modal-close-bg-hover);
+    color: var(--modal-close-danger);
 }
 
 .chat-chart-expanded {
@@ -1061,8 +1239,8 @@ input[type="file"] {
 
 .chat-welcome-examples li {
     padding: 0.42rem 0.65rem;
-    background: rgba(15, 123, 108, 0.06);
-    border: 1px solid rgba(15, 123, 108, 0.14);
+    background: color-mix(in srgb, var(--teal), transparent 94%);
+    border: 1px solid color-mix(in srgb, var(--teal), transparent 86%);
     border-radius: 8px;
     font-size: 0.83rem;
     color: var(--teal-dark);
@@ -1071,8 +1249,8 @@ input[type="file"] {
 }
 
 .chat-welcome-examples li:hover {
-    background: rgba(15, 123, 108, 0.12);
-    border-color: rgba(15, 123, 108, 0.3);
+    background: color-mix(in srgb, var(--teal), transparent 88%);
+    border-color: color-mix(in srgb, var(--teal), transparent 70%);
 }
 
 .hidden-panel {
@@ -1288,7 +1466,7 @@ input[type="file"] {
     font-weight: 600;
     font-size: 0.82rem;
     padding: 8px 12px;
-    background: rgba(15, 123, 108, 0.08);
+    background: var(--teal-soft);
     border-bottom: 1px solid var(--line);
     color: var(--teal-dark);
 }
@@ -1310,7 +1488,7 @@ input[type="file"] {
 
 .chat-data-table td {
     padding: 5px 12px;
-    border-bottom: 1px solid rgba(34, 30, 26, 0.07);
+    border-bottom: 1px solid color-mix(in srgb, var(--line), transparent 32%);
 }
 
 .chat-data-table tbody tr:last-child td {
@@ -1318,7 +1496,7 @@ input[type="file"] {
 }
 
 .chat-data-table tbody tr:hover {
-    background: rgba(15, 123, 108, 0.04);
+    background: color-mix(in srgb, var(--teal), transparent 96%);
 }
 
 .chat-data-table .num {
