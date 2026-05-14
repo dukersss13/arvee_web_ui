@@ -28,6 +28,8 @@ const BUFFERING_PHRASES = [
     "Crunching the numbers...",
 ];
 
+const CONNECTION_CHECK_TIMEOUT_MS = 8000;
+
 function randomBufferingPhrase() {
     return BUFFERING_PHRASES[Math.floor(Math.random() * BUFFERING_PHRASES.length)];
 }
@@ -165,6 +167,42 @@ async function arveeFetch(input, init = {}) {
         ...init,
         headers: mergedHeaders,
     });
+}
+
+async function checkBackendConnectivity() {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), CONNECTION_CHECK_TIMEOUT_MS);
+
+    try {
+        const response = await fetch(resolveApiUrl("/api/health"), {
+            method: "GET",
+            headers: {
+                "Cache-Control": "no-cache",
+            },
+            signal: controller.signal,
+        });
+
+        if (!response.ok) {
+            setStatus(`Backend check failed (${response.status}).`);
+            return;
+        }
+
+        const payload = await response.json().catch(() => ({}));
+        if (String(payload.status || "").toLowerCase() === "ok") {
+            setStatus("Connected to backend");
+            return;
+        }
+
+        setStatus("Backend health response was unexpected.");
+    } catch (err) {
+        const reason = err?.name === "AbortError"
+            ? "timed out"
+            : (err?.message || "unknown error");
+        setStatus(`Cannot reach backend (${reason}).`);
+        showError(`Cannot reach backend at ${API_BASE_URL}. Update the API Base URL and retry.`);
+    } finally {
+        clearTimeout(timeoutId);
+    }
 }
 
 function buildLocalSessionId() {
@@ -2051,6 +2089,7 @@ window.__arveeAppReady = true;
 
 setApiBaseUrl(API_BASE_URL);
 refreshAuthUi();
+checkBackendConnectivity();
 
 byId("api-base-url")?.addEventListener("change", (event) => {
     setApiBaseUrl(event.target.value);
