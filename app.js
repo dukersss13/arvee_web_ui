@@ -34,10 +34,28 @@ function randomBufferingPhrase() {
 
 const byId = (id) => document.getElementById(id);
 
-const DEFAULT_API_BASE_URL = "https://arvee-backend-5hqe7uiuka-uc.a.run.app";
+const DEFAULT_API_BASE_URL = "http://localhost:7860";
 let API_BASE_URL = String(
     globalThis.ARVEE_API_BASE_URL || localStorage.getItem("arveeApiBaseUrl") || DEFAULT_API_BASE_URL,
 ).replace(/\/$/, "");
+
+// Disable auth UI and enforcement for local development: clear tokens and hide auth controls.
+try {
+    localStorage.removeItem("arveeAuthToken");
+    localStorage.removeItem("arveeUserEmail");
+    document.addEventListener("DOMContentLoaded", function () {
+        var authShell = document.querySelector('.auth-shell');
+        if (authShell) {
+            authShell.style.display = 'none';
+        }
+        var authStatus = document.getElementById('auth-status');
+        if (authStatus) {
+            authStatus.textContent = 'Authentication disabled';
+        }
+    });
+} catch (e) {
+    // best-effort; ignore errors in environments without DOM/localStorage
+}
 
 function setApiBaseUrl(nextValue) {
     const normalized = String(nextValue || "").trim().replace(/\/$/, "");

@@ -273,9 +273,13 @@
     </main>
 
     <script>
-        window.ARVEE_API_BASE_URL =
+        const _queryParams = new URLSearchParams(window.location.search || "");
+        const _apiBaseUrl = _queryParams.get("apiBaseUrl");
+        window.ARVEE_API_BASE_URL = String(
+            _apiBaseUrl ||
             localStorage.getItem("arveeApiBaseUrl") ||
-            "https://arvee-backend-5hqe7uiuka-uc.a.run.app";
+            "http://localhost:7860"
+        ).replace(/\/$/, "");
     </script>
     <script src="./app.js"></script>
     <script>
