@@ -452,10 +452,10 @@ function renderChatTranscript() {
             "<strong>Hi, I\u2019m ArVee!</strong>" +
             "<span>I\u2019m here to help with your finances. Try asking me questions like:</span>" +
             '<ul class="chat-welcome-examples">' +
-            '<li data-q="How much did I spend on food this month?">\u201cHow much did I spend on food this month?\u201d</li>' +
-            '<li data-q="What category did I spend the most money on?">\u201cWhat category did I spend the most money on?\u201d</li>' +
-            '<li data-q="Show my top 5 spending categories">\u201cShow my top 5 spending categories\u201d</li>' +
-            '<li data-q="Show me a chart of my spendings this month">\u201cShow me a chart of my spendings this month\u201d</li>' +
+            '<li data-q="How much did I spend on food?">\u201cHow much did I spend on food?\u201d</li>' +
+            '<li data-q="What\'s my top spending category?">\u201cWhat\'s my top spending category?\u201d</li>' +
+            '<li data-q="Show my top 5 categories">\u201cShow my top 5 categories\u201d</li>' +
+            '<li data-q="Chart my spending">\u201cChart my spending\u201d</li>' +
             "</ul>";
         welcome.querySelectorAll(".chat-welcome-examples li").forEach((li) => {
             li.addEventListener("click", () => {
