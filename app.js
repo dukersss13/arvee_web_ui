@@ -519,6 +519,29 @@ function formatUsd(value) {
     }).format(numeric);
 }
 
+function niceTickInfo(rawMax, targetTicks = 4) {
+    const safeMax = Math.max(1, Number(rawMax) || 1);
+    const rawStep = safeMax / Math.max(1, targetTicks);
+    const magnitude = Math.pow(10, Math.floor(Math.log10(rawStep)));
+    const candidates = [1, 2, 5, 10];
+    let step = magnitude;
+    for (let c of candidates) {
+        if (c * magnitude >= rawStep) {
+            step = c * magnitude;
+            break;
+        }
+    }
+    const maxTick = step * Math.ceil(safeMax / step);
+    const tickCount = Math.ceil(maxTick / step);
+    return { step, maxTick, tickCount };
+}
+
+function titleCase(input) {
+    if (!input && input !== 0) return "";
+    const s = String(input);
+    return s.replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.slice(1).toLowerCase());
+}
+
 function buildTopCategoriesTable(categories) {
     if (!Array.isArray(categories) || !categories.length) {
         return null;
@@ -720,7 +743,7 @@ function buildGroupedBarChartNode(chart) {
 
     const title = document.createElement("div");
     title.className = "chat-chart-title";
-    title.textContent = chart.title || "Category comparison";
+    title.textContent = titleCase(chart.title || "Category comparison");
     wrapper.appendChild(title);
 
     const tooltip = document.createElement("div");
@@ -739,7 +762,7 @@ function buildGroupedBarChartNode(chart) {
         swatch.style.backgroundColor = idx === 0 ? "#0f7b6c" : "#e59f3a";
 
         const label = document.createElement("span");
-        label.textContent = String(s.name || `Series ${idx + 1}`);
+        label.textContent = titleCase(String(s.name || `Series ${idx + 1}`));
 
         legendItem.appendChild(swatch);
         legendItem.appendChild(label);
@@ -762,7 +785,9 @@ function buildGroupedBarChartNode(chart) {
     const values = series.flatMap((s) =>
         Array.isArray(s.values) ? s.values.map((value) => Number(value) || 0) : [],
     );
-    const maxValue = Math.max(1, ...values);
+    const rawMax = Math.max(1, ...values);
+    const tickInfo = niceTickInfo(rawMax, 4);
+    const chartMax = tickInfo.maxTick;
 
     const axis = document.createElementNS("http://www.w3.org/2000/svg", "path");
     axis.setAttribute(
@@ -774,10 +799,9 @@ function buildGroupedBarChartNode(chart) {
     axis.setAttribute("fill", "none");
     svg.appendChild(axis);
 
-    const tickCount = 4;
-    for (let i = 0; i <= tickCount; i += 1) {
-        const value = (maxValue / tickCount) * i;
-        const y = margin.top + plotHeight - (value / maxValue) * plotHeight;
+    for (let i = 0; i <= tickInfo.tickCount; i += 1) {
+        const value = tickInfo.step * i;
+        const y = margin.top + plotHeight - (value / chartMax) * plotHeight;
 
         const grid = document.createElementNS("http://www.w3.org/2000/svg", "line");
         grid.setAttribute("x1", String(margin.left));
@@ -811,7 +835,7 @@ function buildGroupedBarChartNode(chart) {
 
         series.forEach((entry, seriesIndex) => {
             const value = Number(entry?.values?.[categoryIndex] ?? 0) || 0;
-            const barHeight = (value / maxValue) * plotHeight;
+            const barHeight = (value / chartMax) * plotHeight;
             const x = groupStartX + seriesIndex * (barWidth + barGap);
             const y = margin.top + plotHeight - barHeight;
 
@@ -824,8 +848,8 @@ function buildGroupedBarChartNode(chart) {
             bar.setAttribute("fill", seriesIndex === 0 ? "#0f7b6c" : "#e59f3a");
             bar.classList.add("chat-chart-bar");
 
-            const label = String(entry?.name || `Series ${seriesIndex + 1}`);
-            const tooltipText = `${label}: ${formatUsd(value)}`;
+            const seriesLabel = titleCase(String(entry?.name || `Series ${seriesIndex + 1}`));
+            const tooltipText = `${seriesLabel}: ${formatUsd(value)}`;
 
             bar.addEventListener("mousemove", (event) => {
                 const bounds = wrapper.getBoundingClientRect();
@@ -851,7 +875,8 @@ function buildGroupedBarChartNode(chart) {
         xLabel.setAttribute("y", String(labelY));
         xLabel.setAttribute("class", "chat-chart-axis-text");
         const maxLen = categories.length > 4 ? 9 : 12;
-        xLabel.textContent = category.length > maxLen ? `${category.slice(0, maxLen)}…` : category;
+        const pretty = titleCase(category);
+        xLabel.textContent = pretty.length > maxLen ? `${pretty.slice(0, maxLen)}…` : pretty;
         if (categories.length > 4) {
             xLabel.setAttribute("text-anchor", "end");
             xLabel.setAttribute("transform", `rotate(-40, ${labelX}, ${labelY})`);
@@ -877,7 +902,7 @@ function buildSingleBarChartNode(chart) {
 
     const title = document.createElement("div");
     title.className = "chat-chart-title";
-    title.textContent = chart.title || "Spending breakdown";
+    title.textContent = titleCase(chart.title || "Spending breakdown");
     wrapper.appendChild(title);
 
     const tooltip = document.createElement("div");
@@ -896,7 +921,9 @@ function buildSingleBarChartNode(chart) {
     const margin = { top: 14, right: 12, bottom: 70, left: 46 };
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
-    const maxValue = Math.max(1, ...values);
+    const rawMax = Math.max(1, ...values);
+    const tickInfo = niceTickInfo(rawMax, 4);
+    const chartMax = tickInfo.maxTick;
 
     const axis = document.createElementNS("http://www.w3.org/2000/svg", "path");
     axis.setAttribute(
@@ -908,10 +935,9 @@ function buildSingleBarChartNode(chart) {
     axis.setAttribute("fill", "none");
     svg.appendChild(axis);
 
-    const tickCount = 4;
-    for (let i = 0; i <= tickCount; i += 1) {
-        const value = (maxValue / tickCount) * i;
-        const y = margin.top + plotHeight - (value / maxValue) * plotHeight;
+    for (let i = 0; i <= tickInfo.tickCount; i += 1) {
+        const value = tickInfo.step * i;
+        const y = margin.top + plotHeight - (value / chartMax) * plotHeight;
 
         const grid = document.createElementNS("http://www.w3.org/2000/svg", "line");
         grid.setAttribute("x1", String(margin.left));
@@ -935,7 +961,7 @@ function buildSingleBarChartNode(chart) {
     const barWidth = Math.min(28, band * 0.66);
     labels.forEach((label, idx) => {
         const value = values[idx];
-        const barHeight = (value / maxValue) * plotHeight;
+        const barHeight = (value / chartMax) * plotHeight;
         const x = margin.left + idx * band + (band - barWidth) / 2;
         const y = margin.top + plotHeight - barHeight;
 
@@ -948,7 +974,7 @@ function buildSingleBarChartNode(chart) {
         bar.setAttribute("fill", "#0f7b6c");
         bar.classList.add("chat-chart-bar");
 
-        const tooltipText = `${label}: ${formatUsd(value)}`;
+        const tooltipText = `${titleCase(label)}: ${formatUsd(value)}`;
         bar.addEventListener("mousemove", (event) => {
             const bounds = wrapper.getBoundingClientRect();
             tooltip.hidden = false;
@@ -972,7 +998,8 @@ function buildSingleBarChartNode(chart) {
         xLabel.setAttribute("y", String(labelY));
         xLabel.setAttribute("class", "chat-chart-axis-text");
         const maxLen = labels.length > 4 ? 9 : 12;
-        xLabel.textContent = label.length > maxLen ? `${label.slice(0, maxLen)}…` : label;
+        const pretty = titleCase(label);
+        xLabel.textContent = pretty.length > maxLen ? `${pretty.slice(0, maxLen)}…` : pretty;
         if (labels.length > 4) {
             xLabel.setAttribute("text-anchor", "end");
             xLabel.setAttribute("transform", `rotate(-40, ${labelX}, ${labelY})`);
@@ -1003,7 +1030,7 @@ function buildPieChartNode(chart) {
 
     const title = document.createElement("div");
     title.className = "chat-chart-title";
-    title.textContent = chart.title || "Spending share by category";
+    title.textContent = titleCase(chart.title || "Spending share by category");
     wrapper.appendChild(title);
 
     const legend = document.createElement("div");
@@ -1047,7 +1074,7 @@ function buildPieChartNode(chart) {
         path.classList.add("chat-chart-bar");
 
         const percent = ((value / total) * 100).toFixed(1);
-        const tooltipText = `${label}: ${formatUsd(value)} (${percent}%)`;
+        const tooltipText = `${titleCase(label)}: ${formatUsd(value)} (${percent}%)`;
 
         path.addEventListener("mousemove", (event) => {
             const bounds = wrapper.getBoundingClientRect();
@@ -1071,7 +1098,7 @@ function buildPieChartNode(chart) {
         swatch.className = "chat-chart-swatch";
         swatch.style.backgroundColor = color;
         const legendText = document.createElement("span");
-        legendText.textContent = `${label} ${percent}%`;
+        legendText.textContent = `${titleCase(label)} ${percent}%`;
         legendItem.appendChild(swatch);
         legendItem.appendChild(legendText);
         legend.appendChild(legendItem);
